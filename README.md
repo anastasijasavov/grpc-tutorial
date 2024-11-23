@@ -12,7 +12,7 @@ Projekat iz naprednog softverskog inzenjerstva.
 
 # Sta je gRPC?
 
-gRPC (remote procedure call - protokol za udaljene procedure) je framework, inicijalno kreiran od kompanije Google, koristeći Google Protocol Buffer-e.
+gRPC (remote procedure call - poziv udaljene procedure) je framework, inicijalno kreiran od kompanije Google, koristeći Google Protocol Buffer-e.
 gRPC je otvorenog koda i ima najvecu primenu u razvoju mikroservisa, zbog brzine prenosa podataka i efikasnosti 
 (strukture paketa podataka koji se brze citaju u odnosu na klasicne REST API-jeve koji koriste JSON za komunikaciju).
 
