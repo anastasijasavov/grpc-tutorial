@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcTestProject";
+
+import "google/api/annotations.proto";
+
+package gallery;
+
+service Gallery {
+
+    // Create Gallery
+    rpc CreateGallery(CreateGalleryRequest) returns (CreateGalleryResponse){
+          option (google.api.http) = {
+            get: "/v1/galleries/create"
+          };
+    }    
+    
+    // Read all galleries
+    rpc ReadGalleries(GetAllRequest) returns (GetAllResponse){
+        option (google.api.http) = {
+            get: "/v1/galleries"
+        };
+    }    
+    
+    // Read single 
+    rpc ReadGallery(ReadGalleryRequest) returns (ReadGalleryResponse){
+         option (google.api.http) = {
+            get: "/v1/galleries/{id}"
+        };
+    }    
+    
+    // Update
+    rpc UpdateGallery(UpdateGalleryRequest) returns (UpdateGalleryResponse){
+         option (google.api.http) = {
+            put: "/v1/galleries/update"
+         };
+    }
+
+    // Delete
+    rpc DeleteGallery(DeleteGalleryRequest) returns (DeleteGalleryResponse){
+        option (google.api.http) = {
+            get: "/v1/galleries/delete/{id}"
+        };
+    }
+
+}    
+
+
+message CreateGalleryRequest {
+    string name = 1;
+    string description = 2;
+}
+
+message CreateGalleryResponse {
+    int32 id = 1;
+}
+
+message ReadGalleryRequest {
+    int32 id = 1;
+}
+
+message ReadGalleryResponse {
+    int32 id = 1;
+    string name = 2;
+    string description = 3;
+}
+
+message GetAllRequest {}
+
+message GetAllResponse {
+    repeated ReadGalleryResponse galleries = 1;
+}
+
+message UpdateGalleryRequest {
+    int32 id = 1;
+    string name = 2;
+    string description = 3;
+}
+
+message UpdateGalleryResponse{
+    int32 id = 1;
+}
+
+message DeleteGalleryRequest {
+    int32 id = 1;
+}
+
+message DeleteGalleryResponse {
+    int32 id = 1;
+}
