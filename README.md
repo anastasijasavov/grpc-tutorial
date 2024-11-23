@@ -43,14 +43,52 @@ Zbog svojih performansi, manje opterećuje mrežu i štedi resurse uređaja. Tak
 
 # Protocol Buffer
 
+Cross-platform format podataka koji se koristi za serijalizaciju strukturisanih podataka. Koristi IDL (interface definition language) pomocu kog se opisuje struktura poruka, i generator koda koji cita strukturu podataka koji ce da se salju/primaju i generise kod koji ce da salje/prima te strim bajtova koji predstavljaju strukturisane podatke.
+Koriste se .proto fajlovi koji se sastoje od *poruka* i *servisa*. 
+Vrste
+Poruke se sastoje od tipa podatka i imena polja, koristi cele brojeve za identifikaciju svakog polja. Primer:
+```
+syntax = "proto3";
+
+message SimpleRequest {
+  string name = 1;
+  string description = 2;
+  int32 id = 3;
+}
+```
+> [!NOTE]
+> Podaci protocol bafera sadrže samo brojeve, ne i nazive polja, pružajući određene uštede u poređenju sa sistemima koji uključuju nazive polja u podatke.
+
+Takodje, odredjena poruka moze da se koristi kao tip podatka za neku drugu poruku, u okviru nje, na primer:
+```
+message Point {
+  required int32 x = 1;
+  required int32 y = 2;
+  optional string label = 3;
+}
+
+message Line {
+  required Point start = 1;
+  required Point end = 2;
+  optional string label = 3;
+}
+```
+Kljucna rec *required* oznacava da je to polje obavezno, dok *optional* oznacava da je opciono da to polje ucestvuje u prenosu podataka.
+Kao sto vidimo, poruka Point je deo poruke Line, i to imamo 2 polja koje su tipa Point u okviru poruke Line.
 
 # Tipovi komunikacije (strimovanja)
 
 gRPC podrzava 4 tipa komunikacije
 - unarni protokol udaljene procedure
+Metoda koja uzima 1 ulaz i vraca 1 izlazni rezultat.
 - serversko strimovanje RPC-ja
+Prima 1 ulazni paket i vraca strim izlaznog rezultata. Pogodan kada se na serveru izvrsavaju teze operacije koje oduzimaju vise vremena.
 - klijentsko strimovanje
+Otvara se konekcija ka serveru, i kada server prihvati zahtev za konekciju, klijent moze da salje podatke dok se strim ne zatvori.
+Ovaj tip komunikacije je pogodan kada je bitno da nema velikog kasnjenja podataka
 - bidirekciono strimovanje
+Omogucava istovremeno slanje i primanje strima podataka u oba smera. Pogodan za komunikaciju u realnom vremenu.
+  
 ![image](https://github.com/user-attachments/assets/6a88fb41-dedc-4a08-9622-c89f3c9b1a6c)
 
 # Kreiraj svoj gRPC servis
