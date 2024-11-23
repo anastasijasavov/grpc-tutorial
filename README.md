@@ -157,3 +157,44 @@ U ovom primeru, naziv metode koja poziva RPC se zove **SayHello**, u prvim zagra
 
 
 # Kreiraj svoj gRPC servis
+
+gRPC servis je moguce kreirati direktno iz Visual Studia, jer postoji vec templejt za takav servis. Potrebno je da imate instaliran .NET SDK
+Ukoliko ne koristite Visual Studio, potrebno je uneti komandu u terminalu:
+```dotnet new grpc -o <ime_projekta> ``` Nazvacemo ime projekta **GrpcTestProject**.
+Potrebne su nam biblioteke koje ce nam omoguciti olaksan rad sa proto fajlovima kao sto su
+**grpc.tools** - Sluzi za generisanje klasa iz odredjenih proto fajlova 
+**microsoft.entityFrameworkCore.design**
+Koristicemo i SQLite bazu, tako da ce nam trebati i **microsoft.entityFrameworkCore.sqlite**.
+
+> [!CAUTION]
+> Nakon svake promene .proto fajlova potrebno je pokrenuti Buildovanje projekta da bi se izgenerisale klase od definisanih proto fajlova u odgovarajucem programskom jeziku.
+ 
+Struktura projekta
+- Protos
+      - greet.proto
+- Services
+      - GreeterService.cs
+Servis:
+```
+using Grpc.Core;
+using GrpcTestProject;
+
+namespace GrpcTestProject.Services;
+
+public class GreeterService : Greeter.GreeterBase
+{
+    private readonly ILogger<GreeterService> _logger;
+    public GreeterService(ILogger<GreeterService> logger)
+    {
+        _logger = logger;
+    }
+
+    public override Task<HelloReply> SayHello(HelloRequest request, ServerCallContext context)
+    {
+        return Task.FromResult(new HelloReply
+        {
+            Message = "Hello " + request.Name
+        });
+    }
+}
+```
