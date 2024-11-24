@@ -67,7 +67,7 @@ Cross-platform format podataka koji se koristi za serijalizaciju strukturisanih 
 Koriste se .proto fajlovi koji se sastoje od *poruka* i *servisa*. 
 Za C#, kompajler generiše .cs fajl iz svakog .proto fajla sa klasom za svaki tip poruke opisan u .proto fajlu.
 
-##Poruke 
+## Poruke 
 
 **Poruke** se sastoje od tipa podatka i imena polja, i koriste se celi brojevi za identifikaciju svakog polja. Primer:
 ```
@@ -164,7 +164,8 @@ Ukoliko ne koristite Visual Studio, potrebno je uneti komandu u terminalu:
 Potrebne su nam biblioteke koje ce nam omoguciti olaksan rad sa proto fajlovima kao sto su
 **grpc.tools** - Sluzi za generisanje klasa iz odredjenih proto fajlova 
 **microsoft.entityFrameworkCore.design**
-Koristicemo i SQLite bazu, tako da ce nam trebati i **microsoft.entityFrameworkCore.sqlite**.
+Koristicemo i SQLite bazu, tako da ce nam trebati i **microsoft.entityFrameworkCore.sqlite**. Za instaliranje biblioteka mozete koristiti Nuget package manager ili preko konzole ukucati komandu
+```dotnet add package <ime_paketa>```
 
 > [!CAUTION]
 > Nakon svake promene .proto fajlova potrebno je pokrenuti Buildovanje projekta da bi se izgenerisale klase od definisanih proto fajlova u odgovarajucem programskom jeziku.
@@ -174,7 +175,7 @@ Struktura projekta
       - greet.proto
 - Services
       - GreeterService.cs
-Servis:
+Servis koji se kreirao:
 ```
 using Grpc.Core;
 using GrpcTestProject;
@@ -198,3 +199,32 @@ public class GreeterService : Greeter.GreeterBase
     }
 }
 ```
+Kao sto vidimo, funkcija SayHello je obicna funkcija koja prima HelloRequest objekat kao input parametar, taj objekat se generisao prilikom buildovanja projekta, tj u greet.proto fajlu smo definisali strukturu HelloRequest objekta, i potom se izgenerisala odgovarajuca klasa u C# koju mozemo da koristimo za biznis logiku projekta. 
+Takodje, neophodno je da se funkcija **predefinise** koristeci kljucnu rec *override* prilikom definisanja metode, jer je grpc vec izgenerisao metodu SayHello u C#-u i na nama je da predefinisemo logiku te metode. 
+
+**greet.proto** fajl:
+
+```
+syntax = "proto3";
+
+option csharp_namespace = "GrpcTestProject";
+
+package greet;
+
+// Definicija metode SayHello
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply);
+}
+
+// Poruka koja se salje prilikom poziva metode SayHello (input parametar je polje name)
+message HelloRequest {
+  string name = 1;
+}
+
+// Sadrzaj response-a koji se vraca prilikom poziva SayHello
+message HelloReply {
+  string message = 1;
+}
+```
+
