@@ -9,6 +9,7 @@
   <ItemGroup>
     <Protobuf Include="Protos\greet.proto" GrpcServices="Server" Link="Protos/greet.proto" />
     <Protobuf Include="Protos\gallery.proto" GrpcServices="Server" Link="Protos/gallery.proto" />
+    <Protobuf Include="Protos\traffic.proto" GrpcServices="Server" Link="Protos/traffic.proto" />
   </ItemGroup>
 	<ItemGroup>
 		<Protobuf Include="google\api\http.proto" />

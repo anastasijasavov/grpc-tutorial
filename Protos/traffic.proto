@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcTestProject";
+
+import "google/protobuf/timestamp.proto";
+
+package traffic;
+
+service Traffic {
+    rpc GetTrafficInformation(TrafficRequest) returns (stream TrafficResponse);
+
+}
+
+message TrafficRequest {
+    int32 location_id = 1;
+}
+
+message TrafficResponse {
+    enum TrafficStatus {
+            Traffic_UNSPECIFIED = 0;
+            Traffic_CLEAR = 1;
+            Traffic_MODERATE = 2;
+            Traffic_SEVERE = 3;
+    }
+    TrafficStatus trafficStatus = 1;
+    google.protobuf.Timestamp timestamp = 2;
+    string note = 3;
+}
