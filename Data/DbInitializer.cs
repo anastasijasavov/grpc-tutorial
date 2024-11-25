@@ -11,6 +11,18 @@ public class DbInitializer
 
             _dbContext.Database.EnsureCreated();
 
+            if (!_dbContext.Galleries.Any())
+            {
+                var galleries = new List<Models.Gallery>{
+                    new Models.Gallery {
+                        Id = 1,
+                        Name = "Vuk Karadzic",
+                        Description = ""
+                    }
+                };
+                await _dbContext.Galleries.AddRangeAsync(galleries);
+                await _dbContext.SaveChangesAsync();
+            }
             if (!_dbContext.Location.Any())
             {
                 var locations = new List<Models.Location>
@@ -59,6 +71,37 @@ public class DbInitializer
                     }
                 };
                 await _dbContext.Traffic.AddRangeAsync(traffic);
+                await _dbContext.SaveChangesAsync();
+            }
+
+            if (!_dbContext.Photos.Any())
+            {
+                var photos = new List<Models.Photo>
+                {
+                     new Models.Photo
+                    {
+
+                        Id = 1,
+                        Name = "Na Drini Cuprija, kolorizovano",
+                        ImagePath = "/photos/1.jpg",
+                        GalleryId = 1
+                    },
+                    new Models.Photo
+                    {
+                        Id = 2,
+                        Name = "Vrisak",
+                        ImagePath = "/photos/2.jpg",
+                        GalleryId = 1
+                    },
+                    new Models.Photo
+                    {
+                        Id = 3,
+                        Name = "Talasi Kanagave",
+                        ImagePath = "/photos/3.jpg",
+                        GalleryId = 1
+                    }
+                };
+                await _dbContext.Photos.AddRangeAsync(photos);
                 await _dbContext.SaveChangesAsync();
             }
 

@@ -13,25 +13,9 @@ public class AppDbContext : DbContext
     public DbSet<Models.Gallery> Galleries => Set<Models.Gallery>();
     public DbSet<Models.Traffic> Traffic => Set<Models.Traffic>();
     public DbSet<Models.Location> Location => Set<Models.Location>();
+    public DbSet<Models.Photo> Photos => Set<Models.Photo>();
 
 
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Models.Location>()
-        .HasData(
-            new Models.Location
-            {
-                Id = 1,
-                Name = "Sesame street",
-                Description = ""
-            },
-            new Models.Location
-            {
-                Id = 2,
-                Name = "Bulevar Zorana Djindjica"
-            }
-        );
 
-    }
 }

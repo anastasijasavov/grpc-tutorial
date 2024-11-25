@@ -35,6 +35,7 @@ service Gallery {
             put: "/v1/galleries/update"
          };
     }
+    rpc UpdateGalleriesPhotos(stream AddGalleryPhoto) returns (MultiGalleryResponse){}
 
     // Delete
     rpc DeleteGallery(DeleteGalleryRequest) returns (DeleteGalleryResponse){
@@ -45,6 +46,12 @@ service Gallery {
 
 }    
 
+message AddGalleryPhoto {
+    string imagePath = 1;
+    string name = 2;
+    int32 year = 4;
+    int32 gallery_id = 5;
+}
 
 message CreateGalleryRequest {
     string name = 1;
@@ -75,6 +82,9 @@ message UpdateGalleryRequest {
     int32 id = 1;
     string name = 2;
     string description = 3;
+}
+message MultiGalleryResponse {
+    repeated UpdateGalleryResponse gallery_response = 1;
 }
 
 message UpdateGalleryResponse{

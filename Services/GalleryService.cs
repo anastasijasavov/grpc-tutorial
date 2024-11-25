@@ -126,4 +126,30 @@ public class GalleryService : Gallery.GalleryBase
         });
 
     }
+
+    public override async Task<MultiGalleryResponse> UpdateGalleriesPhotos
+    (IAsyncStreamReader<AddGalleryPhoto> requestStream,
+     ServerCallContext context)
+    {
+
+        var response = new MultiGalleryResponse
+        {
+            GalleryResponse = { }
+        };
+        await foreach (var request in requestStream.ReadAllAsync())
+        {
+            var image = new Models.Photo
+            {
+                ImagePath = request.ImagePath,
+                Year = request.Year,
+                Name = request.Name,
+                GalleryId = request.GalleryId
+
+            };
+            _context.Photos.Add(image);
+            await _context.SaveChangesAsync();
+            response.GalleryResponse.Add(new UpdateGalleryResponse { Id = image.Id });
+        }
+        return response;
+    }
 }
