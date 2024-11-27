@@ -14,6 +14,7 @@ Projekat iz naprednog softverskog inzenjerstva.
     - [Poruke](#poruke)
     - [Definisanje servisa](#definisanje-servisa)
 - [Kreiraj svoj gRPC servis](#kreiraj-svoj-grpc-servis)
+    - [Pokretanje projekta](#pokretanje-projekta)
 
 # Sta je gRPC?
 
@@ -427,3 +428,19 @@ Implementacija biznis logike u C# servisu <br>
       return pingCount;
   }
 ```
+
+## Pokretanje projekta
+
+Za pokretanje projekta, potrebno je uneti komandu ***dotnet run*** u terminalu. <br>
+Da bismo testirali i slali pozive ka kreiranom gRPC servisu, koristicemo Postman kao klijenta za nase potrebe. <br>
+Postman ima ugradjenu opciju za gRPC pozive, i potrebno je kreirati novi gRPC poziv. Nakon toga pojavice vam se prozor
+![image](https://github.com/user-attachments/assets/ed0c4ba6-0150-4630-b299-61ddedcb7ea7)
+Nakon unosa URL-a , potrebno je ukljuciti TLS klikom na ikonicu sa katancem. Nakon toga treba odabrati odredjeni poziv <br>
+Moguce je importovati proto fajl gde ce postman da prepozna sve moguce rpc pozive koje ste definisali u proto fajlu. <br>
+![image](https://github.com/user-attachments/assets/00923b7e-b11f-46a7-a7ff-ab6f76dd596a)
+Nakon odabira .proto fajla pojavice se dropdown lista sa mogucim pozivima iz proto fajla 
+![image](https://github.com/user-attachments/assets/d7160b76-4dd1-42dd-9099-5aa9ef5a4444)
+Klikom na dugme Invoke, pozvace se servis
+![image](https://github.com/user-attachments/assets/e7a20eeb-00af-46db-8b3f-3a65665cf598)
+
+
