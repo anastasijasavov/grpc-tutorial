@@ -180,7 +180,7 @@ service Greeter {
 U ovom primeru, naziv metode koja poziva RPC se zove **SayHello**, u prvim zagradama je definisan tip ulaznih parametara koji ce da se koriste prilikom poziva te metode, a u zagradama nakon returns se definise izlazni tip poruke, tj. format odgovora od servisa. <br>
 
 
-# Kreiraj svoj gRPC servis <br>
+# Kreiraj svoj gRPC servis
 
 gRPC servis je moguce kreirati direktno iz Visual Studia, jer postoji vec templejt za takav servis. Potrebno je da imate instaliran .NET SDK. <br>
 Ukoliko ne koristite Visual Studio, potrebno je uneti komandu u terminalu: <br>
