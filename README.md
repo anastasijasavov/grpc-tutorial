@@ -262,6 +262,8 @@ Definicija servisa <br>
 ```
  rpc UpdateGalleriesPhotos(stream AddGalleryPhoto) returns (MultiGalleryResponse){}
 ```
+Kao sto vidimo, otvorice se konekcija izmedju klijenta i servera, ali ce server da vrati odgovor jednom, dok klijent moze da posalje stream poziva da bi dobio 1 odgovor.
+Koristimo primer dodavanja vise slika u galeriji: <br>
 Definicija poruke <br>
 
 ```
@@ -271,12 +273,9 @@ message AddGalleryPhoto {
     int32 year = 4;
     int32 gallery_id = 5;
 }
-
-message UpdateGalleryRequest {
-    int32 id = 1;
-    string name = 2;
-    string description = 3;
-}
+```
+Vracamo kao odgovor listu slika, uz pomoc kljucne reci **repeated**.
+```
 message MultiGalleryResponse {
     repeated UpdateGalleryResponse gallery_response = 1;
 }
@@ -309,6 +308,8 @@ Implementacija biznis logike u C# servisu <br>
      return response;
  }
 ```
+Kao sto vidimo, azuriramo podatke dok klijent salje redom pozive za azuriranje galerije. <br> Treba imati u vidu da konekcija ne sme da se prekine, i da treba ustanoviti neki retry policy ukoliko dodje do neuspesnog zahteva zbog prekida veze. <br> Takodje greske na serveru mogu da dovedu do prekida streama,  i da dovedu do gubitka podataka, tako da je potrebno da se validiraju poruke pre njihovog procesiranja. <br>
+S druge strane, prednosti su da je moguce slati ogromne kolicine podataka podeljene na manje delove. <br>
 
 ## Primer server streaming poziva udaljene procedure
 
@@ -318,6 +319,10 @@ service Traffic {
     rpc GetTrafficInformation(TrafficRequest) returns (stream TrafficResponse);
 }
 ```
+Kao sto vidimo, treba da dobijemo stream kao odgovor sa servera. 
+<br>
+Dobar primer bi mogao da bude neki odgovor sa servera gde je promenljivost podataka jako cesta. <br> 
+U te svrhe definisali smo servis poziv koji vraca trenutnu guzvu u saobracaju na odredjenog lokaciji:  <br>
 Definicija poruke <br>
 ```
 
@@ -337,6 +342,12 @@ message TrafficResponse {
     string note = 3;
 }
 
+```
+Ovde smo definisali i enum za status guzve unutar same poruke.
+<br> Tako je taj enum ostao nevidljiv za ostatak proto fajla, tako da ako bismo zeleli da ima veci scope, morali bismo da ga definisemo van poruke. <br>
+Takodje vracamo i timestamp tip sto je ugradjena google klasa, koju smo prethodno importovali:
+```
+import "google/protobuf/timestamp.proto";
 ```
 Implementacija biznis logike u C# servisu <br>
 ```
@@ -366,6 +377,7 @@ Implementacija biznis logike u C# servisu <br>
       }
   }
 ```
+Ovde smo napravili simulaciju realnog dogadjaja gde bismo dobijali odgovor od nekog eksternog servisa o statusu guzve na svake 3 sekunde. <br> Pre same operacije, proverili smo ukoliko je poziv otkazan od strane klijenta pomocu CancellationToken.IsCancellationRequested flaga.   <br>
 
 ## Primer dvosmernog streaming poziva udaljene procedure
 Definicija servisa <br>
@@ -374,6 +386,7 @@ service Chat {
    rpc SendMessage(stream ClientMessage) returns (stream ServerMessage){}
 }
 ```
+U ovom slucaju mi saljemo i primamo stream podataka. U te svrhe mozemo da vidimo simulaciju jednog chata, gde nam je potrebno da veza izmedju klijenta i sevrera bude otvorena, i potom saljemo i primamo poruke od servera u isto vreme. <br>
 
 Definicija poruke <br>
 ```
@@ -388,18 +401,8 @@ message ServerMessage {
 ```
 
 Implementacija biznis logike u C# servisu <br>
-```
-  public override async  Task SendMessage 
-      (IAsyncStreamReader<ClientMessage> requestStream, 
-      IServerStreamWriter<ServerMessage> responseStream, 
-      ServerCallContext context)
-  {
-      var clientToServerTask = HandleClientRequest(requestStream, context);
-      var serverToClientTask = HandleServerResponse(responseStream, context);
-      
-      await Task.WhenAll(clientToServerTask, serverToClientTask);
-  }
 
+```
   private async Task HandleClientRequest(IAsyncStreamReader<ClientMessage> requestStream, ServerCallContext context)
   {
       while (await requestStream.MoveNext() && !context.CancellationToken.IsCancellationRequested)
@@ -408,6 +411,9 @@ Implementacija biznis logike u C# servisu <br>
           _logger.LogInformation($"Client said {message.Text}");
       }
   }
+```
+Napravili smo manju metodu koja ce da izvrsava samo primanje poruka sa klijentske strane. 
+```
 
   private static async Task<int> HandleServerResponse(IServerStreamWriter<ServerMessage> responseStream, ServerCallContext context)
   {
@@ -428,10 +434,28 @@ Implementacija biznis logike u C# servisu <br>
       return pingCount;
   }
 ```
+Isto smo uradili i za slanje odgovora klijentu sa strane servera. <br> Imamo u oba slucaja proveru ukoliko je zatrazeno da se prekine konekcija. Ovde doduse imamo neprekidno slanje odgovora sa serverske strane ka klijentu dok klijent sam ne prekine konekciju. <br>
+Na samom kraju, mozemo da definisemo samu funkciju koja obuhvata obe ove navedene metode <br>
+
+```
+  public override async  Task SendMessage 
+      (IAsyncStreamReader<ClientMessage> requestStream, 
+      IServerStreamWriter<ServerMessage> responseStream, 
+      ServerCallContext context)
+  {
+      var clientToServerTask = HandleClientRequest(requestStream, context);
+      var serverToClientTask = HandleServerResponse(responseStream, context);
+      
+      await Task.WhenAll(clientToServerTask, serverToClientTask);
+  }
+```
+Kao ulazne parametre za ovu metodu imamo i stream sa klijenta, i streamWriter za odgovore sa strane servera, pomocu kog mozemo da saljemo nove poruke.<br>
 
 ## Pokretanje projekta
 
 Za pokretanje projekta, potrebno je uneti komandu ***dotnet run*** u terminalu. <br>
+![image](https://github.com/user-attachments/assets/764e41fe-c809-4c38-a25b-18ea72aa179c)
+Server je aktivan na navedenim portovima, tako da cemo iskoristiti HTTPS URL. <br>
 Da bismo testirali i slali pozive ka kreiranom gRPC servisu, koristicemo Postman kao klijenta za nase potrebe. <br>
 Postman ima ugradjenu opciju za gRPC pozive, i potrebno je kreirati novi gRPC poziv. Nakon toga pojavice vam se prozor
 ![image](https://github.com/user-attachments/assets/ed0c4ba6-0150-4630-b299-61ddedcb7ea7)
