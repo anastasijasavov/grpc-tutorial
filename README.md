@@ -453,18 +453,27 @@ Kao ulazne parametre za ovu metodu imamo i stream sa klijenta, i streamWriter za
 
 ## Pokretanje projekta
 
-Za pokretanje projekta, potrebno je uneti komandu ***dotnet run*** u terminalu. <br>
+Za pokretanje projekta, potrebno je uneti komandu ***dotnet run*** u terminalu. <br> <br>
+
 ![image](https://github.com/user-attachments/assets/764e41fe-c809-4c38-a25b-18ea72aa179c)
+
 Server je aktivan na navedenim portovima, tako da cemo iskoristiti HTTPS URL. <br>
 Da bismo testirali i slali pozive ka kreiranom gRPC servisu, koristicemo Postman kao klijenta za nase potrebe. <br>
-Postman ima ugradjenu opciju za gRPC pozive, i potrebno je kreirati novi gRPC poziv. Nakon toga pojavice vam se prozor
+Postman ima ugradjenu opciju za gRPC pozive, i potrebno je kreirati novi gRPC poziv. Nakon toga pojavice vam se prozor <br>
+
 ![image](https://github.com/user-attachments/assets/ed0c4ba6-0150-4630-b299-61ddedcb7ea7)
+
 Nakon unosa URL-a , potrebno je ukljuciti TLS klikom na ikonicu sa katancem. Nakon toga treba odabrati odredjeni poziv <br>
 Moguce je importovati proto fajl gde ce postman da prepozna sve moguce rpc pozive koje ste definisali u proto fajlu. <br>
+
 ![image](https://github.com/user-attachments/assets/00923b7e-b11f-46a7-a7ff-ab6f76dd596a)
-Nakon odabira .proto fajla pojavice se dropdown lista sa mogucim pozivima iz proto fajla 
+
+Nakon odabira .proto fajla pojavice se dropdown lista sa mogucim pozivima iz proto fajla  <br>
+
 ![image](https://github.com/user-attachments/assets/d7160b76-4dd1-42dd-9099-5aa9ef5a4444)
-Klikom na dugme Invoke, pozvace se servis
+
+Klikom na dugme Invoke, pozvace se servis <br>
+
 ![image](https://github.com/user-attachments/assets/e7a20eeb-00af-46db-8b3f-3a65665cf598)
 
 
