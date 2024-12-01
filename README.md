@@ -19,27 +19,27 @@ Projekat iz naprednog softverskog inzenjerstva.
 # Sta je gRPC?
 
 gRPC (remote procedure call - poziv udaljene procedure) je framework, inicijalno kreiran od kompanije Google, koristeći Google Protocol Buffer-e. <br>
-gRPC je otvorenog koda i ima najvecu primenu u razvoju mikroservisa, zbog brzine prenosa podataka i efikasnosti 
-(strukture paketa podataka koji se brze citaju u odnosu na klasicne REST API-jeve koji koriste JSON za komunikaciju). <br>
+gRPC je otvorenog koda i ima najveću primenu u razvoju mikroservisa, zbog brzine prenosa podataka i efikasnosti 
+(strukture paketa podataka koji se brže čitaju u odnosu na klasične REST API-jeve koji koriste JSON za komunikaciju). <br>
 
 # Prednosti i mane
 
 ## Prednosti 
 
-- Performanse: gRPC je optimizovan za visoku brzinu i efikasnost.
+- Performanse - gRPC je optimizovan za visoku brzinu i efikasnost.
 Koristi binarni protokol prenosa podataka koji je manje zahtevan za mrežu u odnosu na tekstualne formate (npr. JSON).
 Ovo omogućava brži prenos podataka i manje opterećenje mreže.
-- Strogo tipizirana komunikacija: koriste se protobuf ugovori (contracts) za definisanje interfejsa i poruka koje da se razmenjuju.
-Stroga tipizacija omogucava lakse otkrivanje gresaka.
-- Multipleksiranje - visestruki pozivi: gRPC podrzava višestruke pozive u okviru jedne mrežne veze.
+- Strogo tipizirana komunikacija - koriste se protobuf ugovori (contracts) za definisanje interfejsa i poruka koje se razmenjuju.
+Stroga tipizacija omogucava lakše otkrivanje grešaka.
+- Multipleksiranje - višestruki pozivi: gRPC podržava višestruke pozive u okviru jedne mrežne veze.
 To znači da se više poziva može izvršavati istovremeno, čime se postiže veća efikasnost i manje zagušenja mreže.
-- Podrska za vise jezika: gRPC pruža biblioteke i generisane kodove za podržane programske jezike kao sto su: C#, Java, Python, Go itd..
+- Podrška za više jezika - gRPC pruža biblioteke i generisane kodove za podržane programske jezike kao sto su: C#, Java, Python, Go itd..
 
 ## Mane
 
 gRPC zahteva da klijenti i serveri koriste specifične biblioteke za gRPC, što može ograničiti fleksibilnost i interoperabilnost sa drugim sistemima. <br>
-Takođe, gRPC zahteva podešavanje HTTP/2 protokola za komunikaciju, što može biti složeno u nekim okruženjima, i u vecini slucajeva je potrebno da se koristi neki proxy (posrednik). <br>
-Trenutna resenja koje pruza gRPC su JSON Transkodiranje (.NET 7+) i gRPC-Web koji sluze kao resenja za komunikaciju web aplikacija sa gRPC-jem.  <br>
+Takođe, gRPC zahteva podešavanje HTTP/2 protokola za komunikaciju, što može biti složeno u nekim okruženjima, i u većini slučajeva je potrebno da se koristi neki proxy (posrednik). <br>
+Trenutna rešenja koje pruža gRPC su JSON Transkodiranje (.NET 7+) i gRPC-Web koji služe kao rešenja za komunikaciju web aplikacija sa gRPC-jem.  <br>
 
 # Kada koristiti gRPC?
 
@@ -50,21 +50,23 @@ Zbog svojih performansi, manje opterećuje mrežu i štedi resurse uređaja. Tak
 
 # Tipovi komunikacije (strimovanja)
 
-gRPC podrzava 4 tipa komunikacije
-- unarni protokol udaljene procedure
-Metoda koja uzima 1 ulaz i vraca 1 izlazni rezultat.
-- serversko strimovanje RPC-ja
-Prima 1 ulazni paket i vraca strim izlaznog rezultata. Pogodan kada se na serveru izvrsavaju teze operacije koje oduzimaju vise vremena.
-- klijentsko strimovanje
-Otvara se konekcija ka serveru, i kada server prihvati zahtev za konekciju, klijent moze da salje podatke dok se strim ne zatvori.
-Ovaj tip komunikacije je pogodan kada je bitno da nema velikog kasnjenja podataka
-- bidirekciono strimovanje
-Omogucava istovremeno slanje i primanje strima podataka u oba smera. Pogodan za komunikaciju u realnom vremenu.
+gRPC podržava 4 tipa komunikacije
+ - Unarni protokol udaljene procedure
+<br> Metoda koja uzima 1 ulaz i vraca 1 izlazni rezultat.
+ - Serversko strimovanje RPC-ja
+<br> Prima 1 ulazni paket i vraća strim izlaznog rezultata. Pogodan kada se na serveru izvršavaju teže operacije koje oduzimaju više vremena.
+ - Klijentsko strimovanje
+<br> Otvara se konekcija ka serveru, i kada server prihvati zahtev za konekciju, klijent može da šalje podatke dok se strim ne zatvori. <br>
+Ovaj tip komunikacije je pogodan kada je bitno da nema velikog kašnjenja podataka
+ - Bidirekciono strimovanje
+<br> Omogućava istovremeno slanje i primanje strima podataka u oba smera. Pogodan za komunikaciju u realnom vremenu.
   
 ![image](https://github.com/user-attachments/assets/6a88fb41-dedc-4a08-9622-c89f3c9b1a6c)
 
 # Status kodovi
-Status kodovi koje gRPC servis moze da ima su:
+
+Status kodovi koje gRPC servis može da ima su:
+
 | Kod                 | Id | Opis                                                                                |
 |---------------------|----|-------------------------------------------------------------------------------------|
 | OK                  | 0  | Uspeh                                                                               |
@@ -87,8 +89,8 @@ Status kodovi koje gRPC servis moze da ima su:
 
 # Protocol Buffer
 
-Cross-platform format podataka koji se koristi za serijalizaciju strukturisanih podataka. Koristi IDL (interface definition language) pomocu kog se opisuje struktura poruka, i generator koda koji cita strukturu podataka koji ce da se salju/primaju i generise kod koji ce da salje/prima te strim bajtova koji predstavljaju strukturisane podatke. <br>
-Koriste se .proto fajlovi koji se sastoje od *poruka* i *servisa*.  <br>
+Cross-platform format podataka koji se koristi za serijalizaciju strukturisanih podataka. Koristi IDL (**interface definition language**) pomoću kog se opisuje struktura poruka, i generator koda koji čita strukturu podataka koji će da se šalju/primaju i generiše kod koji ce da šalje/prima taj strim bajtova koji predstavljaju strukturisane podatke. <br>
+Koriste se **.proto** fajlovi koji se sastoje od *poruka* i *servisa*.  <br>
 Za C#, kompajler generiše .cs fajl iz svakog .proto fajla sa klasom za svaki tip poruke opisan u .proto fajlu. <br>
 
 ## Poruke 
@@ -103,22 +105,22 @@ message SimpleRequest {
   int32 id = 3;
 }
 ```
-Na pocetku svakog proto fajla treba da se definise sintaksna verzija proto fajla, podrazumevana verzija je proto2 ukoliko se ne doda specifikacija verzije. <br>
+Na početku svakog .proto fajla treba da se definiše sintaksna verzija proto fajla, podrazumevana verzija je proto2 ukoliko se ne doda specifikacija verzije. <br>
 ```syntax = "proto3";``` <br>
 
 Svako polje mora da se sastoji od tipa polja, imena i broja.  <br>
 ### Pravila za numerisanje polja
-- Polje mora da ima broj od 1 do 536,870,911.
+- Polje mora da ima broj od 1 do 536.870.911.
 - Broj polja mora da bude unikatno medju drugim poljima.
 - Brojevi izmedju 19000 i 19999 su rezervisani
-- Ne smeju da se koriste prethodno rezervisana polja (brojke koje su definisane kljucnom recju **reserved** - obrisana polja). <br>
+- Ne smeju da se koriste prethodno rezervisana polja (brojke koje su definisane ključnom rečju **reserved** - obrisana polja). <br>
 
-Moguci tipovi podataka za polja su: <br>
+Mogući tipovi podataka za polja su: <br>
 
-- **int32** (ukoliko ce vrednost da cesto dobija negativne vrednosti preporucuje se upotreba sint32 umesto int32), <br> **float**, **double**, **int64** (isto kao i kod int32, preporucuje se sint64 ukoliko ce polje da ima cesce negativne vrednosti, enkodira negativne vrednosti efikasnije od int64), <br> **uint32**, **uint64**, **fixed32** (sadrzi 4 bajta, efikasniji ukoliko je vrednost cesce veca od 2^28), <br> **fixed64** (isto kao za fixed32, samo za vrednosti vece od 2^56), <br> **sfixed32**, **sfixed64**, **bool**, **string** (UTF-8 enkodiranje, ili 7-bitni ASCII tekst, ogranicenje je da duzina bude do 2^32), **bytes** (do 2^32 duzina bajtova). <br> <br>
+- **int32** (ukoliko ce vrednost često da dobija negativne vrednosti preporučuje se upotreba sint32 umesto int32), <br> **float**, **double**, **int64** (isto kao i kod int32, preporučuje se sint64 ukoliko će polje da ima češće negativne vrednosti, enkodira negativne vrednosti efikasnije od int64), <br> **uint32**, **uint64**, **fixed32** (sadrzi 4 bajta, efikasniji ukoliko je vrednost češće veća od 2^28), <br> **fixed64** (isto kao za fixed32, samo za vrednosti vece od 2^56), <br> **sfixed32**, **sfixed64**, **bool**, **string** (UTF-8 enkodiranje, ili 7-bitni ASCII tekst, ograničenje je da dužina bude do 2^32), **bytes** (do 2^32 dužina bajtova). <br> <br>
 
-**Bool** vrednosti su po defaultu false, **bytes** je prazan, **string** je “”, numericke vrednosti imaju defaultnu vrednost 0.
-Za **enume** podrazumevana vrednost je prva vrednost definisana u enumu (koja mora da ima vrednost 0), takodje prva vrednost enuma bi trebalo da se nazove **<Ime_Enuma>UNSPECIFIED** ili **<Ime_enuma_>UNKNOWN.** <br>
+**Bool** vrednosti su po defaultu false, **bytes** je prazan, **string** je “”, numeričke vrednosti imaju podrazumevanu vrednost 0.
+Za **enume** podrazumevana vrednost je prva vrednost definisana u enumu (koja mora da ima vrednost 0), takođe prva vrednost enuma bi trebalo da se nazove **<Ime_Enuma>UNSPECIFIED** ili **<Ime_enuma_>UNKNOWN.** <br>
 
 Primer za enum:
 ```
@@ -136,9 +138,9 @@ message GetGalleries {
 }
 ```
 > [!NOTE]
-> Podaci protocol bafera sadrže samo brojeve, ne i nazive polja, pružajući određene uštede u poređenju sa sistemima koji uključuju nazive polja u podatke.
+> Podaci protocol bafera sadrže samo brojeve, ne i nazive polja, pružajući određene uštede u poređenju sa sistemima koji uključuju nazive polja.
 
-Takodje, odredjena poruka moze da se koristi kao tip podatka za neku drugu poruku, u okviru nje, na primer:
+Takodje, određena poruka može da se koristi kao tip podatka za neku drugu poruku, u okviru nje, na primer:
 ```
 message Point {
   required int32 x = 1;
@@ -154,48 +156,48 @@ message Line {
 ```
 ## Kardinalnost podataka
 
-Kljucna rec *required* oznacava da je to polje obavezno, dok *optional* oznacava da je opciono da to polje ucestvuje u prenosu podataka. <br>
-Kao sto vidimo, poruka Point je deo poruke Line, i to imamo 2 polja koje su tipa Point u okviru poruke Line. <br>
-Polje takodje moze da ima tip **repeated** (moze da se ponavlja 0 ili vise puta, redosled podataka u tom nizu se takodje cuva) i 
-**map** koji je pogodan za kljuc/vrednost tipove podataka.<br>
+Ključna rec *required* označava da je to polje obavezno, dok *optional* označava da je opciono da to polje učestvuje u prenosu podataka. <br>
+Kao što vidimo, poruka Point je deo poruke Line, i to imamo 2 polja koje su tipa Point u okviru poruke Line. <br>
+Polje takođe može da ima tip **repeated** (može da se ponavlja 0 ili vise puta, redosled podataka u tom nizu se takodje čuva) i 
+**map** koji je pogodan za ključ/vrednost tipove podataka.<br>
 
 ## Brisanje polja
 Brisanje polja može izazvati ozbiljne probleme ako se ne uradi kako treba.
 
 > [!CAUTION]
 > Kada vam više ne treba polje i sve reference su obrisane iz klijentskog koda, možete izbrisati definiciju polja iz poruke. 
-> Međutim, morate rezervisati broj izbrisanog polja kljucnom recju *reserved*:
+> Međutim, morate rezervisati broj izbrisanog polja kljucnom rečju *reserved*:
 ```
 message Foo {
   reserved 2, 15, 9 to 11;
 }
 ```
 ## Definisanje servisa
-Servisi su na neki nacin metode u interfejsu koje definisu kako ce da se upotrebljavaju poruke. Servisi se definisu na sledeci nacin:
+Servisi su na neki način metode u interfejsu koje definišu kako će da se upotrebljavaju poruke. Servisi se definišu na sledeći način:
 ```
 service Greeter {
   rpc SayHello (HelloRequest) returns (HelloReply);
 }
 ```
-U ovom primeru, naziv metode koja poziva RPC se zove **SayHello**, u prvim zagradama je definisan tip ulaznih parametara koji ce da se koriste prilikom poziva te metode, a u zagradama nakon returns se definise izlazni tip poruke, tj. format odgovora od servisa. <br>
+U ovom primeru, naziv metode koja poziva RPC se zove **SayHello**, u prvim zagradama je definisan tip ulaznih parametara koji će da se koriste prilikom poziva te metode, a u zagradama nakon returns se definiše izlazni tip poruke, tj. format odgovora od servisa. <br>
 
 
 # Kreiraj svoj gRPC servis
 
-gRPC servis je moguce kreirati direktno iz Visual Studia, jer postoji vec templejt za takav servis. Potrebno je da imate instaliran .NET SDK. <br>
+gRPC servis je moguće kreirati direktno iz Visual Studia, jer postoji već templejt za takav servis. Potrebno je da imate instaliran .NET SDK. <br>
 Ukoliko ne koristite Visual Studio, potrebno je uneti komandu u terminalu: <br>
 ```dotnet new grpc -o <ime_projekta> ``` <br>
-Nazvacemo ime projekta **GrpcTestProject**. <br>
-Potrebne su nam biblioteke koje ce nam omoguciti olaksan rad sa proto fajlovima kao sto su <br>
- - **grpc.tools** - Sluzi za generisanje klasa iz odredjenih proto fajlova <br> 
+Nazvaćemo ime projekta **GrpcTestProject**. <br>
+Potrebne su nam biblioteke koje će nam omogućiti olakšan rad sa proto fajlovima kao što su <br>
+ - **grpc.tools** - Služi za generisanje klasa iz određenih proto fajlova <br> 
  - **microsoft.entityFrameworkCore.design** <br>
-Koristicemo i SQLite bazu, tako da ce nam trebati i
+Koristićemo i SQLite bazu, tako da će nam trebati i
  - **microsoft.entityFrameworkCore.sqlite**.
-<br> Za instaliranje biblioteka mozete koristiti Nuget package manager ili preko konzole ukucati komandu <br>
+<br> Za instaliranje biblioteka možete koristiti Nuget package manager ili preko konzole ukucati komandu <br>
 ```dotnet add package <ime_paketa>```
 
 > [!CAUTION]
-> Nakon svake promene .proto fajlova potrebno je pokrenuti buildovanje projekta da bi se izgenerisale klase od definisanih proto fajlova u odgovarajucem programskom jeziku.
+> Nakon svake promene .proto fajlova potrebno je pokrenuti buildovanje projekta da bi se izgenerisale klase od definisanih proto fajlova u odgovarajućem programskom jeziku.
  
 Struktura projekta
 - Protos <br>
@@ -226,8 +228,8 @@ public class GreeterService : Greeter.GreeterBase
     }
 }
 ```
-Kao sto vidimo, funkcija SayHello je obicna funkcija koja prima HelloRequest objekat kao input parametar, taj objekat se generisao prilikom buildovanja projekta, tj u **greet.proto** fajlu smo definisali strukturu HelloRequest objekta, i potom se izgenerisala odgovarajuca klasa u C# koju mozemo da koristimo za biznis logiku projekta. <br>
-Takodje, neophodno je da se funkcija **predefinise** koristeci kljucnu rec *override* prilikom definisanja metode, jer je protoc (kompajler za proto fajlove) vec izgenerisao metodu SayHello u C#-u i na nama je da predefinisemo logiku te metode. <br>
+Kao što vidimo, funkcija SayHello je obična funkcija koja prima HelloRequest objekat kao ulazni parametar, taj objekat se generisao prilikom buildovanja projekta, tj u **greet.proto** fajlu smo definisali strukturu HelloRequest objekta, i potom se izgenerisala odgovarajuća klasa u C# koju možemo da koristimo za biznis logiku projekta. <br>
+Takođe, neophodno je da se funkcija **predefiniše** koristeći ključnu reč *override* prilikom definisanja metode, jer je protoc (kompajler za proto fajlove) već izgenerisao metodu SayHello u C#-u i na nama je da predefinišemo logiku te metode. <br>
 
 **greet.proto** fajl:
 
@@ -244,17 +246,17 @@ service Greeter {
   rpc SayHello (HelloRequest) returns (HelloReply);
 }
 
-// Poruka koja se salje prilikom poziva metode SayHello (input parametar je polje name)
+// Poruka koja se šalje prilikom poziva metode SayHello (ulazni parametar je polje name)
 message HelloRequest {
   string name = 1;
 }
 
-// Sadrzaj response-a koji se vraca prilikom poziva SayHello
+// Sadrzaj response-a koji se vraća prilikom poziva SayHello
 message HelloReply {
   string message = 1;
 }
 ```
-Ovaj primer je takodje primer jednog unarnog poziva. <br>
+Ovaj primer je takođe primer jednog unarnog poziva. <br>
 
 ## Primer klijentskog streaming poziva udaljene procedure
 Definicija servisa <br>
@@ -262,8 +264,8 @@ Definicija servisa <br>
 ```
  rpc UpdateGalleriesPhotos(stream AddGalleryPhoto) returns (MultiGalleryResponse){}
 ```
-Kao sto vidimo, otvorice se konekcija izmedju klijenta i servera, ali ce server da vrati odgovor jednom, dok klijent moze da posalje stream poziva da bi dobio 1 odgovor.
-Koristimo primer dodavanja vise slika u galeriji: <br>
+Kao što vidimo, otvoriće se veza između klijenta i servera, ali će server da vrati odgovor jednom, dok klijent može da pošalje stream poziva da bi dobio 1 odgovor.
+Koristimo primer dodavanja više slika u galeriji: <br>
 Definicija poruke <br>
 
 ```
@@ -274,7 +276,7 @@ message AddGalleryPhoto {
     int32 gallery_id = 5;
 }
 ```
-Vracamo kao odgovor listu slika, uz pomoc kljucne reci **repeated**.
+Vraćamo kao odgovor listu slika, uz pomoć ključne reči **repeated**.
 ```
 message MultiGalleryResponse {
     repeated UpdateGalleryResponse gallery_response = 1;
@@ -308,8 +310,8 @@ Implementacija biznis logike u C# servisu <br>
      return response;
  }
 ```
-Kao sto vidimo, azuriramo podatke dok klijent salje redom pozive za azuriranje galerije. <br> Treba imati u vidu da konekcija ne sme da se prekine, i da treba ustanoviti neki retry policy ukoliko dodje do neuspesnog zahteva zbog prekida veze. <br> Takodje greske na serveru mogu da dovedu do prekida streama,  i da dovedu do gubitka podataka, tako da je potrebno da se validiraju poruke pre njihovog procesiranja. <br>
-S druge strane, prednosti su da je moguce slati ogromne kolicine podataka podeljene na manje delove. <br>
+Kao što vidimo, ažuriramo podatke dok klijent šalje redom pozive za ažuriranje galerije. <br> Treba imati u vidu da konekcija ne sme da se prekine, i da treba ustanoviti neki retry policy ukoliko dođe do neuspešnog zahteva zbog prekida veze. <br> Takođe greške na serveru mogu da dovedu do prekida streama i do gubitka podataka, tako da je potrebno da se validiraju poruke pre njihovog procesiranja. <br>
+S druge strane, prednosti su da je moguće slati ogromne količine podataka podeljene na manje delove. <br>
 
 ## Primer server streaming poziva udaljene procedure
 
@@ -319,10 +321,10 @@ service Traffic {
     rpc GetTrafficInformation(TrafficRequest) returns (stream TrafficResponse);
 }
 ```
-Kao sto vidimo, treba da dobijemo stream kao odgovor sa servera. 
+Kao što vidimo, treba da dobijemo stream kao odgovor sa servera. 
 <br>
-Dobar primer bi mogao da bude neki odgovor sa servera gde je promenljivost podataka jako cesta. <br> 
-U te svrhe definisali smo servis poziv koji vraca trenutnu guzvu u saobracaju na odredjenog lokaciji:  <br>
+Dobar primer bi mogao da bude neki odgovor sa servera gde je promenljivost podataka jako česta. <br> 
+U te svrhe definisali smo servis poziv koji vraća trenutnu gužvu u saobraćaju na određenog lokaciji:  <br>
 Definicija poruke <br>
 ```
 
@@ -343,9 +345,9 @@ message TrafficResponse {
 }
 
 ```
-Ovde smo definisali i enum za status guzve unutar same poruke.
-<br> Tako je taj enum ostao nevidljiv za ostatak proto fajla, tako da ako bismo zeleli da ima veci scope, morali bismo da ga definisemo van poruke. <br>
-Takodje vracamo i timestamp tip sto je ugradjena google klasa, koju smo prethodno importovali:
+Ovde smo definisali i enum za status gužve unutar same poruke.
+<br> Tako je taj enum ostao nevidljiv za ostatak proto fajla, i ako bismo želeli da ima veći scope, morali bismo da ga definišemo van poruke. <br>
+Takođe vraćamo i timestamp tip sto je ugrađena google klasa, koju smo prethodno importovali:
 ```
 import "google/protobuf/timestamp.proto";
 ```
@@ -377,16 +379,17 @@ Implementacija biznis logike u C# servisu <br>
       }
   }
 ```
-Ovde smo napravili simulaciju realnog dogadjaja gde bismo dobijali odgovor od nekog eksternog servisa o statusu guzve na svake 3 sekunde. <br> Pre same operacije, proverili smo ukoliko je poziv otkazan od strane klijenta pomocu CancellationToken.IsCancellationRequested flaga.   <br>
+Ovde smo napravili simulaciju realnog događaja gde bismo dobijali odgovor od nekog eksternog servisa o statusu gužve na svake 3 sekunde. <br> Pre same operacije, proverili smo ukoliko je poziv otkazan od strane klijenta pomoću CancellationToken.IsCancellationRequested flaga.   <br>
 
 ## Primer dvosmernog streaming poziva udaljene procedure
+
 Definicija servisa <br>
 ```
 service Chat {
    rpc SendMessage(stream ClientMessage) returns (stream ServerMessage){}
 }
 ```
-U ovom slucaju mi saljemo i primamo stream podataka. U te svrhe mozemo da vidimo simulaciju jednog chata, gde nam je potrebno da veza izmedju klijenta i sevrera bude otvorena, i potom saljemo i primamo poruke od servera u isto vreme. <br>
+U ovom slučaju mi šaljemo i primamo stream podataka. U te svrhe možemo da vidimo simulaciju jednog chata, gde nam je potrebno da veza između klijenta i servera bude otvorena, i potom šaljemo i primamo poruke od servera u isto vreme. <br>
 
 Definicija poruke <br>
 ```
@@ -434,8 +437,8 @@ Napravili smo manju metodu koja ce da izvrsava samo primanje poruka sa klijentsk
       return pingCount;
   }
 ```
-Isto smo uradili i za slanje odgovora klijentu sa strane servera. <br> Imamo u oba slucaja proveru ukoliko je zatrazeno da se prekine konekcija. Ovde doduse imamo neprekidno slanje odgovora sa serverske strane ka klijentu dok klijent sam ne prekine konekciju. <br>
-Na samom kraju, mozemo da definisemo samu funkciju koja obuhvata obe ove navedene metode <br>
+Isto smo uradili i za slanje odgovora klijentu sa strane servera. <br> Imamo u oba slučaja proveru ukoliko je zatraženo da se prekine konekcija. Ovde doduše imamo neprekidno slanje odgovora sa serverske strane ka klijentu dok klijent sam ne prekine konekciju. <br>
+Na samom kraju, možemo da definišemo samu funkciju koja obuhvata obe ove navedene metode <br>
 
 ```
   public override async  Task SendMessage 
@@ -449,7 +452,7 @@ Na samom kraju, mozemo da definisemo samu funkciju koja obuhvata obe ove naveden
       await Task.WhenAll(clientToServerTask, serverToClientTask);
   }
 ```
-Kao ulazne parametre za ovu metodu imamo i stream sa klijenta, i streamWriter za odgovore sa strane servera, pomocu kog mozemo da saljemo nove poruke.<br>
+Kao ulazne parametre za ovu metodu imamo i stream sa klijenta, i streamWriter za odgovore sa strane servera, pomoću kog možemo da šaljemo nove poruke.<br>
 
 ## Pokretanje projekta
 
@@ -457,22 +460,22 @@ Za pokretanje projekta, potrebno je uneti komandu ***dotnet run*** u terminalu. 
 
 ![image](https://github.com/user-attachments/assets/764e41fe-c809-4c38-a25b-18ea72aa179c)
 
-Server je aktivan na navedenim portovima, tako da cemo iskoristiti HTTPS URL. <br>
-Da bismo testirali i slali pozive ka kreiranom gRPC servisu, koristicemo Postman kao klijenta za nase potrebe. <br>
-Postman ima ugradjenu opciju za gRPC pozive, i potrebno je kreirati novi gRPC poziv. Nakon toga pojavice vam se prozor <br>
+Server je aktivan na navedenim portovima, tako da ćemo iskoristiti HTTPS URL. <br>
+Da bismo testirali i slali pozive ka kreiranom gRPC servisu, koristićemo Postman kao klijenta za naše potrebe. <br>
+Postman ima ugrađenu opciju za gRPC pozive, i potrebno je kreirati novi gRPC poziv. Nakon toga pojaviće vam se prozor <br>
 
 ![image](https://github.com/user-attachments/assets/ed0c4ba6-0150-4630-b299-61ddedcb7ea7)
 
-Nakon unosa URL-a , potrebno je ukljuciti TLS klikom na ikonicu sa katancem. Nakon toga treba odabrati odredjeni poziv <br>
-Moguce je importovati proto fajl gde ce postman da prepozna sve moguce rpc pozive koje ste definisali u proto fajlu. <br>
+Nakon unosa URL-a , potrebno je uključiti TLS klikom na ikonicu sa katancem. Nakon toga treba odabrati određeni poziv <br>
+Moguće je importovati proto fajl gde će Postman da prepozna sve moguće rpc pozive koje ste definisali u proto fajlu. <br>
 
 ![image](https://github.com/user-attachments/assets/00923b7e-b11f-46a7-a7ff-ab6f76dd596a)
 
-Nakon odabira .proto fajla pojavice se dropdown lista sa mogucim pozivima iz proto fajla  <br>
+Nakon odabira .proto fajla pojaviće se dropdown lista sa mogućim pozivima iz proto fajla <br>
 
 ![image](https://github.com/user-attachments/assets/d7160b76-4dd1-42dd-9099-5aa9ef5a4444)
 
-Klikom na dugme Invoke, pozvace se servis <br>
+Klikom na dugme Invoke, poziva se servis <br>
 
 ![image](https://github.com/user-attachments/assets/e7a20eeb-00af-46db-8b3f-3a65665cf598)
 
