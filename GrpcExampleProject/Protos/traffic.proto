@@ -8,7 +8,6 @@ package traffic;
 
 service Traffic {
     rpc GetTrafficInformation(TrafficRequest) returns (stream TrafficResponse);
-
 }
 
 message TrafficRequest {
