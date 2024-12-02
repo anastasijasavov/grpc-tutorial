@@ -9,46 +9,45 @@ package gallery;
 service Gallery {
 
     // Create Gallery
-    rpc CreateGallery(CreateGalleryRequest) returns (CreateGalleryResponse){
-          option (google.api.http) = {
-            get: "/v1/galleries/create"
-          };
-    }    
+    rpc CreateGallery(CreateGalleryRequest) returns (CreateGalleryResponse){}    
     
     // Read all galleries
-    rpc ReadGalleries(GetAllRequest) returns (GetAllResponse){
-        option (google.api.http) = {
-            get: "/v1/galleries"
-        };
-    }    
+    rpc ReadGalleries(GetAllRequest) returns (GetAllResponse){}    
     
     // Read single 
-    rpc ReadGallery(ReadGalleryRequest) returns (ReadGalleryResponse){
-         option (google.api.http) = {
-            get: "/v1/galleries/{id}"
-        };
-    }    
+    rpc ReadGallery(ReadGalleryRequest) returns (ReadGalleryResponse){}    
     
     // Update
-    rpc UpdateGallery(UpdateGalleryRequest) returns (UpdateGalleryResponse){
-         option (google.api.http) = {
-            put: "/v1/galleries/update"
-         };
-    }
+    rpc UpdateGallery(UpdateGalleryRequest) returns (UpdateGalleryResponse){ }
+
     rpc UpdateGalleriesPhotos(stream AddGalleryPhoto) returns (MultiGalleryResponse){}
 
     // Delete
-    rpc DeleteGallery(DeleteGalleryRequest) returns (DeleteGalleryResponse){
-        option (google.api.http) = {
-            get: "/v1/galleries/delete/{id}"
-        };
-    }
+    rpc DeleteGallery(DeleteGalleryRequest) returns (DeleteGalleryResponse){}
+
+    rpc GetPhotosByGalleryId(PhotoRequest) returns (PhotosResponse){}
 
 }    
+
+message PhotoRequest {
+    int32 id = 1;
+}
+
+message PhotosResponse {
+    repeated Photo photos = 1;
+}
 
 message AddGalleryPhoto {
     string imagePath = 1;
     string name = 2;
+    int32 year = 4;
+    int32 gallery_id = 5;
+}
+
+message Photo {
+    int32 id = 1;
+    string imagePath = 2;
+    string name = 3;
     int32 year = 4;
     int32 gallery_id = 5;
 }

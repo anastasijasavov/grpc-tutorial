@@ -1,3 +1,4 @@
+using Google.Protobuf.Collections;
 using Grpc.Core;
 using GrpcTestProject.Data;
 using GrpcTestProject.Models;
@@ -12,6 +13,34 @@ public class GalleryService : Gallery.GalleryBase
     {
         _context = context;
     }
+    public override async Task<PhotosResponse> GetPhotosByGalleryId
+    (PhotoRequest request, ServerCallContext context)
+    {
+        var galleryExists = await _context.Galleries.AnyAsync(x => x.Id == request.Id);
+
+        if (!galleryExists)
+        {
+            throw new RpcException(new Status(StatusCode.NotFound, "Ne postoje slike za datu galeriju."));
+        }
+
+        var photos = await _context.Photos.Where(x => x.GalleryId == request.Id).ToListAsync();
+        var response = new PhotosResponse();
+
+        foreach (var item in photos)
+        {
+
+            response.Photos.Add(new GrpcTestProject.Photo
+            {
+                GalleryId = item.GalleryId,
+                Id = item.Id,
+                Name = item.Name,
+                ImagePath = item.ImagePath,
+                Year = item.Year
+            });
+        }
+        return await Task.FromResult(response);
+    }
+
 
     public override async Task<CreateGalleryResponse> CreateGallery
     (CreateGalleryRequest request, ServerCallContext context)
